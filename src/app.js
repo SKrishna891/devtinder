@@ -3,21 +3,32 @@ const express = require('express');
 const app = express();
 
 
-app.get("/user", (req, res) => {
-    res.send("Namastey sai");
-});
+app.use("/user", (req, res,next) => {
+    console.log("server1");
+   // res.send("Hello from the server1");
+    next();
+},
+(req, res,next) => {
+    console.log("server2");
+   // res.send("Hello from the server2");
+    next();
+},
+[(req,res,next) => {
+    console.log("server3");
+    //res.send("Hello from server 3");
+    next();
+},
+(req,res,next) => {
+    console.log("server4");
+    //res.send("Hello from server 4");
+    next();
+},
+(req,res,next) => {
+    console.log("server5");
+    res.send("Hello from server 5");
 
-app.post("/user", (req, res) => {
-    res.send("data posted sucessfully");
-});
-
-app.delete("/user", (req, res) => {
-    res.send("Data deleted sucessfully");
-});
-
-app.use("/test", (req, res) => {
-    res.send("Hello from the server");
-});
+}]
+);
  
 app.listen(3000, () => {
     console.log("server is listen ing on port 3000");
