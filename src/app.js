@@ -2,33 +2,25 @@ const express = require('express');
 
 const app = express();
 
+const { Adminauth, Userauth } = require("./Middlewares/auth");
+console.log("Adminauth middleware:", Adminauth);
 
-app.use("/user", (req, res,next) => {
-    console.log("server1");
-   // res.send("Hello from the server1");
-    next();
-},
-(req, res,next) => {
-    console.log("server2");
-   // res.send("Hello from the server2");
-    next();
-},
-[(req,res,next) => {
-    console.log("server3");
-    //res.send("Hello from server 3");
-    next();
-},
-(req,res,next) => {
-    console.log("server4");
-    //res.send("Hello from server 4");
-    next();
-},
-(req,res,next) => {
-    console.log("server5");
-    res.send("Hello from server 5");
+app.use("/admin",Adminauth);
 
-}]
-);
+
+app.get("/user", Userauth, (req,res) => {
+
+    res.send("user data sent");    
+});
+
+app.get("/admin/getAllData",(req,res) => {
+
+        res.send("Data sent sucessfully");    
+});
+
+app.get("/admin/Deleteuser", (req,res) => {
+    res.send("Data delted sucessfully");
+});
  
 app.listen(3000, () => {
     console.log("server is listen ing on port 3000");
