@@ -70,21 +70,36 @@ app.delete("/user",async (req, res) => {
 
 });
 
-app.patch("/user", async (req,res) => {
-const userId = req.body.userId;
+app.patch("/user/:67b141751bd44adb0f516db0", async (req,res) => {
+const userId = req.params?.userId;
 const data = req.body;
+const Allowed_Updates = [
+   "userId",
+   "phonenumber",
+   "firstName",
+   "age",
+   "email",
+
+];
+
 try{
-const user = await User.findByIdAndUpdate(userId,data);
+const user = await User.findByIdAndUpdate(userId,data,{runValidators: true});
+const isUpdatesAloowed = Object.keys(data).every((K) => Allowed_Updates.includes(K));
+if(!isUpdatesAloowed){
+   throw new error("update not alllowed");
+}
 res.send("userupdated sucessfully");
 }catch(err){
-   res.status(500).send("user data not saved");
+   res.status(404).send("update failed: " + err.message);
+
  }
 });
 app.patch("/useremail", async(req,res) => {
 const emailId = req.body.email;
 const data = req.body;
 try{
-const user = await User.findOneAndUpdate({ email: emailId },data);
+const user = await User.findOneAndUpdate({ email: emailId },data,
+   );
 res.send("data updated sucessfully");
 }catch(err){
    res.status(500).send("user data not saved");
