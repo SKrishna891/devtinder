@@ -29,7 +29,6 @@ const UserSchema = new mongoose.Schema({
     },
     gender :{
         type : String,
-        required : true,
         validate(value){
             if(!["male", "female","others"].includes(value)){
                 throw new error("gender is not valid");  
@@ -42,7 +41,6 @@ const UserSchema = new mongoose.Schema({
     },
     age : {
         type : Number,
-        required : true,
         min : 18,
     },
 
