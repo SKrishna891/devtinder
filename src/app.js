@@ -5,10 +5,16 @@ const connectDB = require("./configure/database");
 const User = require("./models/user");
 const validatesignupdata = require("./utilis/validation");
 
+const { Userauth }= require("./Middlewares/auth");
+
 const bcrypt = require("bcrypt");
 const app = express();
 
+const cookieparser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+
 app.use(express.json());
+app.use(cookieparser());
 
 app.get("/user", async (req,res) => {
    const userEmail = req.body.email;
@@ -78,9 +84,14 @@ try{
       throw new Error("Invalid credintials");
    }
    const ispasswordvalid = await bcrypt.compare(password, user.password);
-   console.log(password);
-   console.log(user.password);
+   
+   
    if(ispasswordvalid){
+
+      const token = await jwt.sign({_id:user._id},"dev@tinder$9");
+
+      
+      res.cookie("token",token);
       res.send("login sucessfull");
 }
 else{
@@ -89,6 +100,26 @@ else{
 }catch(err){
    res.status(500).send("Error :" +err.message);
 }
+});
+
+app.get("/profile", Userauth, async (req,res) => {
+   try{
+
+      const user = req.user;
+
+   res.send(user);}
+   catch(err){
+      res.status(500).send("Error :" +err.message);
+   }
+
+});
+
+app.post("/sendingrequest", Userauth,async (req, res) => {
+
+   const user = req.user;
+
+   res.send(user.firstName + "request sent");
+
 });
 
 
