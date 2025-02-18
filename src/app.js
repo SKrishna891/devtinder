@@ -88,7 +88,7 @@ try{
    
    if(ispasswordvalid){
 
-      const token = await jwt.sign({_id:user._id},"dev@tinder$9");
+      const token = await user.getjwt();
 
       
       res.cookie("token",token);
