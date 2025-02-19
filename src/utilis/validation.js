@@ -14,7 +14,18 @@ const validatesignupdata = (req) => {
             throw new Error("password is required");
         }
 
+        };
+
+        const validateProfileEditdata = (req) => {
+
+     const allowedFields = ["firstName","lastName","gender","skills",]
+
+     const isprofileallowed = Object.keys(req.body).every((field) => allowedFields.includes(field));
+
+    return isprofileallowed;
+
+
         }
         
-        module.exports = validatesignupdata;
+        module.exports = {validatesignupdata, validateProfileEditdata};
     
