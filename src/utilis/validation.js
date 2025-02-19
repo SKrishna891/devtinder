@@ -1,6 +1,8 @@
 const validator = require("validator");
 
 
+
+
 const validatesignupdata = (req) => {
     const {firstName, lastName, email, password}  = req.body;
 
@@ -25,7 +27,27 @@ const validatesignupdata = (req) => {
     return isprofileallowed;
 
 
-        }
+        };
+
         
-        module.exports = {validatesignupdata, validateProfileEditdata};
+
+const validatePasswordUpdate = (req) => {
+
+    const { oldPassword, newPassword} = req.body;
+
+if(!oldPassword || !newPassword){
+
+    return false;
+}
+    if(newPassword.length <6){
+        return false;
+    }
+    return true;
+
+};
+
+
+
+        
+        module.exports = {validatesignupdata, validateProfileEditdata,validatePasswordUpdate};
     
